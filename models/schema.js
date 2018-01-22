@@ -21,3 +21,8 @@ const boarder = new mongoose.Schema({
   contents : { type: String, required: true},
   reg_date: { type: Date, default: Date.now }
 });
+
+module.exports = {
+  memberSchema : mongoose.model('member', member),
+  boarderSchema : mongoose.model('boarder', boarder)
+}
