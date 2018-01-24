@@ -11,8 +11,35 @@ var schema = require('../models/schema.js');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  var Boarder = schema.boarderSchema;
+  Boarder.find(function(err, boarder) {
+    if (err) {
+      res.render('error', {});
+    } else{
+      console.log(boarder);
+      res.render('index', {boarders: boarder});
+    }
+  });
 });
+
+router.get('/boarderFrom', function(req, res, next){
+  res.render('createBoarder', {});
+});
+
+router.post('/createBoarder', function(req, res, next){
+  var Boarder = schema.boarderSchema;
+  var boarder = new Boarder({
+    nick: "jhy",
+    category: "common",
+    title: req.body.title,
+    contents: req.body.contents
+  });
+  boarder.save(function (err, result) {
+    if (err) return console.error(err);
+    console.dir(result);
+    res.redirect('/')
+  })
+})
 
 router.get('/addmember', function(req, res, next) {
   res.render('addmember', {});

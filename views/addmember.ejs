@@ -3,18 +3,50 @@
   <head>
     <title></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.17.6/vuetify.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.17.6/vuetify.css">
     <meta charset="utf-8">
   </head>
   <body>
-    <h1>Welcome to knu_project</h1>
-    <form class="" action="/registermember" method="post">
-      <input type="email" name="email" value="" placeholder="E-mail">
-      <br>
-      <input type="password" name="password" value="" placeholder="Password">
-      <br>
-      <input type="text" name="nick" value="" placeholder="닉네임">
-      <br>
-      <input type="submit" value="submit">
-    </form>
+    <div id="app"></div>
+    <script>
+      new Vue({
+        el: "#app",
+        template: '\
+        <v-app>\
+          <v-toolbar color="indigo" dark fixed app>\
+            <v-toolbar-title>knu_project</v-toolbar-title>\
+          </v-toolbar>\
+          <v-content>\
+            <v-container fluid>\
+              <v-layout column>\
+                <br>\
+                <v-flex xs6 offset-xs3>\
+                  <v-toolbar flat dense class="indigo" dark >\
+                    <v-toolbar-title>Register</v-toolbar-title>\
+                  </v-toolbar>\
+                  <div class="pl-4 pr-4 pt-2 pb-2">\
+                    <v-form action="/registermember" method="post">\
+                      <v-text-field label="E-mail" v-model="email" name="email" required></v-text-field>\
+                      <v-text-field label="Password" v-model="password" required></v-text-field>\
+                      <v-text-field label="Nickname" v-model="nick" required></v-text-field>\
+                      <v-btn type="submit" block color="secondary" class="cyan">Sign Up</v-btn>\
+                    </v-form>\
+                  </div>\
+                </v-flex>\
+              </v-layout>\
+            </v-container>\
+          </v-content>\
+        <v-app>',
+        data: function(){
+          return {
+            email: 'hello',
+            password: '',
+            nick: ''
+          }
+        }
+      })
+    </script>
   </body>
 </html>
