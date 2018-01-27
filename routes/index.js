@@ -26,6 +26,17 @@ router.get('/boarderFrom', function(req, res, next){
   res.render('createBoarder', {});
 });
 
+router.get('/detailBoarder/:_id', function(req, res, next){
+  var Boarder = schema.boarderSchema;
+  Boarder.findOne({_id: req.params._id}, function(err, doc){
+    if(err) res.status(500).send({success: false});
+    else {
+      console.log(doc);
+      res.render('detailBoarder', {boarder: doc});
+    }
+  })
+})
+
 router.post('/createBoarder', function(req, res, next){
   var Boarder = schema.boarderSchema;
   var boarder = new Boarder({

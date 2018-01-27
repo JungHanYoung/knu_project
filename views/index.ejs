@@ -35,19 +35,22 @@
               <v-layout column>
                 <br>
                 <v-flex xs6 offset-xs3>
-                  <v-tooltip right>
+                  <v-tooltip right class="text-xs-right">
                     <v-btn icon large slot="activator" href="/boarderFrom"><v-icon>create</v-icon></v-btn>
-                    <span>Create</span>
+                    <span>글작성</span>
                   </v-tooltip>
-                  <v-list two-line>
-                    <template v-for="item in items">
-                      <v-list-tile v-bind:key="item._id" @click="">
-                        <v-list-tile-content>
-                          <v-list-tile-title v-model="item.title">{{ item.title }}</v-list-tile-title>
-                        </v-list-tile-content>
-                      </v-list-tile>
-                    </template>
-                  </v-list>
+                    <v-list two-line>
+                      <template v-for="item in items">
+                          <v-list-tile v-bind:key="item._id" :href="'/detailBoarder/' + item._id">
+                            <v-list-tile-content>
+                              <v-list-tile-title v-model="item.title">{{ item.title }}</v-list-tile-title>
+                            </v-list-tile-content>
+                              <v-list-tile-action>
+                              <v-list-tile-action-text>{{ item.nick }}</v-list-tile-action-text>
+                            </v-list-tile-action>
+                          </v-list-tile>
+                      </template>
+                    </v-list>
                   <div class="text-xs-center">
                     <v-pagination :length="6" v-model="page"></v-pagination >
                   </div>

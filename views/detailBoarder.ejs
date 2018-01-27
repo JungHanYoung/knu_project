@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="/javascripts/ckeditor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.17.6/vuetify.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.17.6/vuetify.css">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+    <meta charset="utf-8">
+</head>
+
+<body>
+    <div id="app"></div>
+    
+    <script>
+        // Replace the <textarea id="editor1"> with a CKEditor
+        // instance, using default configuration.
+        
+                
+        new Vue({
+            el: "#app",
+            template: `
+        <v-app>
+          <v-toolbar color="indigo" dark fixed app>
+            <v-toolbar-title>knu_project</v-toolbar-title>
+            <v-text-field light solo prepend-icon="search" placeholder="Search" style="max-width: 500px; min-width: 128px; margin-left: 50px;"></v-text-field>
+            <v-spacer></v-spacer>
+            <v-badge overlap color="orange">
+              <v-icon slot="badge" dark> notifications</v-icon>
+                <v-icon large color="grey darken-1">
+                  account_box
+                </v-icon>
+            </v-badge >
+          </v-toolbar>
+          <v-content>
+            <v-container fluid>
+              <v-layout column>
+                <br>
+                <v-flex xs6 offset-xs3>
+                    <v-card color="grey lighten-4" flat>
+                        <v-card-text>
+                            <v-subheader>게시물 상세보기@@</v-subheader>
+                            <v-container fluid>
+                                <v-layout row>
+                                    <v-flex xs12>
+                                        <v-card class="elevation-0 transparent">
+                                            <v-card-title primary-title class="layout justify-center">
+                                                <div class="headline">{{ item.title }}</div>
+                                            </v-card-title>
+                                            <v-card-text>
+                                                {{ item.contents}} 
+                                            </v-card-text>
+                                        </v-card>
+                                    </v-flex>
+                                </v-layout>
+                            </v-container>
+                        </v-card-text>
+                    </v-card>
+                    <v-tooltip right>
+                        <v-btn icon large slot="activator" href="/"><v-icon>list</v-icon></v-btn>
+                        <span>목록</span>
+                    </v-tooltip>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-content>
+        <v-app>`,
+        data: function () {
+            return {
+                item: <% if(boarder) { %> <%- JSON.stringify(boarder) %> <% } %>
+            }
+        },
+        methods: {
+
+        }
+    })
+    CKEDITOR.replace('editor1');
+    </script>
+</body>
+
+</html>
