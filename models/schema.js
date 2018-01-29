@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const member = new mongoose.Schema({
   email: { type: String, required: true, unique: true, lowercase: true },
@@ -14,10 +14,25 @@ const member = new mongoose.Schema({
 });
 //member.index({ email: 1, nickname: 1 });
 
-const boarder = new mongoose.Schema({
+const boarders = new mongoose.Schema({
+
   nick: { type: String, required: true },
   category: { type: String, required: true},
   title: { type: String, required: true },
   contents : { type: String, required: true},
   reg_date: { type: Date, default: Date.now }
+
 });
+
+var boarder = new mongoose.Schema({
+  // title: { type: String, required: true }
+  // writer: String,
+  // category: {type: String, required: true},
+  // password: String,
+  // contents: String,
+  // comments: [{name: String, memo: String, date: {type: Date, default: Date.now}}],
+  // count: {type:Number, default:0},
+  // reg_date: {type: Date, default: Date.now}
+});
+
+module.exports = mongoose.model('boarders',boarders);

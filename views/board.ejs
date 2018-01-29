@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+    <script src='https://unpkg.com/vue'></script>
+    <html>
+        <head>
+            <link rel='stylesheet' href='/stylesheets/style.css' />
+            <title>게시판 목록</title>
+        </head>
+        <body>
+            <div>
+                    정보<br>
+
+                    <% boardCount = Number(boardCount) %>   
+                    검색된 총 게시물 수 : <%=boardCount%>
+                    <br>
+
+                    <% page = Number(page) %>   
+                    현재 인덱스  : <%=page%>
+                    <br>
+
+                    <%var boardIndex = ((boardCount%10)==0)?boardIndex=Math.floor(boardCount/10):boardIndex=Math.floor(boardCount/10)+1%>
+                    총 인덱스 수 : <%=boardIndex%>
+                    <br>
+
+                    <%var superialIndex = Math.floor(boardIndex/10)+1%>
+                    상위인덱스 : <%=superialIndex%>
+                    <br>
+
+                    <%var remainIndex = boardIndex%10%>
+                    잔여인덱스 : <%=remainIndex%>
+                    <br>
+            </div><br><br>
+
+            <div>
+                    <% var indexStatus = 0 %>
+                    <% var startPage = 1 %>
+                    <% var endPage = boardIndex %>
+
+                    <% if(boardIndex>10) {indexStatus = 1; endPage=10;} %>
+                    <% if(10<page&&(((Math.floor(page/10)+1)*10)<boardIndex)) {indexStatus = 2; startPage=((Math.floor(page/10))*10)+1; endPage=((Math.floor(page/10)+1)*10);} %>
+                    <% if(10<page&&(((Math.floor(page/10)+1)*10)>boardIndex)) {indexStatus = 3; startPage=((Math.floor(page/10))*10)+1; endPage=boardIndex;} %>
+
+                    현재 인덱스 상태 : <%=indexStatus%>
+            </div><br><br>
+
+
+            <div>
+                    게시물 목록<br><br>
+                    <table style="width:100%; text-align:left;">
+
+                    <tr>
+                        <th>제목</th>
+                        <th>작성자</th> 
+                        <th>작성날짜</th>
+                    </tr>
+                                
+                            <% for(var i=0; i<boardData.length; i++) {%>
+                                    <tr>
+                                    <td><%= boardData[i].title %></td>
+                                    <td><%= boardData[i].nick %></td>
+                                    <td><%= boardData[i].reg_date %></td>
+                                    </tr>
+                            <% } %>
+                    </table>
+            </div><br><br>
+
+
+            <div id="indexButton">
+                    <% for(var i=startPage; endPage>=startPage; startPage++) {%>
+
+                        <% if(startPage==page) { %>
+                            <span><%=startPage%></span>
+                        <% continue;} %>
+
+                        <span><a href="page=<%=startPage%>"><%=startPage%></a></span>
+                    <% } %>
+            </div><br><br>
+
+
+            <div id="nextButton">                
+                    <% if((indexStatus==1)||(indexStatus==2)){ %>
+                    <a href="page=<%=endPage+1%>"><button>NEXT</button></a>
+                    <% } %>
+            </div><br><br>
+
+            <div id="nextMessage">                
+                    <% if((indexStatus==1)||(indexStatus==2)){ %>
+                    <div>다음을 누르시면 새로운 페이지가 나타납니다.</div>
+                    <% } %>
+            </div>
+    
+            <div id="previousButton">
+                    <% if((indexStatus==2)||(indexStatus==3)){ %>
+                        <% var previous = ((Math.floor(page/10))*10) %>
+                        <a href="page=<%=previous%>"><button>PREVIOUS</button></a>
+                    <% } %>
+            </div><br><br>
+
+            <div id="previousMessage">                
+                    <% if(page==boardIndex){ %>
+                    <div>더 이상 표시할 페이지가 없습니다.</div>
+                    <% } %>
+            </div>
+
+
+            <br>
+            <br>
+            <br>
+            <br>
+
+            카테고리 설정
+            <a href="/board/category=common/page=1"><button>common</button></a>
+            <a href="/board/category=trash/page=1"><button>trash</button></a>
+            
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            
+
+
+
+
+            개발중vvvvvvvvvvvvvvv<br><br>
+            <form action="/search">
+                제목 : <input type="checkbox" id="myCheck">
+                내용 : <input type="checkbox" id="myCheck">
+                닉네임 : <input type="checkbox" id="myCheck">
+                컨텐츠 : <input type="checkbox" id="myCheck"> <br>
+                작성날짜 : <input type="month" id="myMonth" value="2018-01">부터 <br>
+                검색할 내용을 입력하세요. 
+                <input type="text" name="firstname">
+                <input type="submit" value="검색">
+            </form> 
+                  
+
+
+
+        </body>
+    </html>
