@@ -38,6 +38,7 @@
                     <% if(boardIndex>10) {indexStatus = 1; endPage=10;} %>
                     <% if(10<page&&(((Math.floor(page/10)+1)*10)<boardIndex)) {indexStatus = 2; startPage=((Math.floor(page/10))*10)+1; endPage=((Math.floor(page/10)+1)*10);} %>
                     <% if(10<page&&(((Math.floor(page/10)+1)*10)>boardIndex)) {indexStatus = 3; startPage=((Math.floor(page/10))*10)+1; endPage=boardIndex;} %>
+                    <% if(10<page&&page%10==0) {indexStatus = 2; startPage=page-9; endPage=((Math.floor(page/10))*10); } %>
 
                     현재 인덱스 상태 : <%=indexStatus%>
             </div><br><br>
