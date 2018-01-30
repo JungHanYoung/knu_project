@@ -65,6 +65,14 @@
             </div><br><br>
 
 
+            <div id="previousButton">
+                <% if((indexStatus==2)||(indexStatus==3)){ %>
+                    <a href="page=<%=startPage-1%>"><button>PREVIOUS</button></a>
+                <% } %>
+            </div><br><br>
+
+
+
             <div id="indexButton">
                     <% for(var i=startPage; endPage>=startPage; startPage++) {%>
 
@@ -89,13 +97,6 @@
                     <% } %>
             </div>
     
-            <div id="previousButton">
-                    <% if((indexStatus==2)||(indexStatus==3)){ %>
-                        <% var previous = ((Math.floor(page/10))*10) %>
-                        <a href="page=<%=previous%>"><button>PREVIOUS</button></a>
-                    <% } %>
-            </div><br><br>
-
             <div id="previousMessage">                
                     <% if(page==boardIndex){ %>
                     <div>더 이상 표시할 페이지가 없습니다.</div>
