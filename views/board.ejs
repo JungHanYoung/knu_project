@@ -1,9 +1,7 @@
 <!DOCTYPE html>
-    <script src='https://unpkg.com/vue'></script>
     <html>
         <head>
-            <link rel='stylesheet' href='/stylesheets/style.css' />
-            <title>게시판 목록</title>
+            <% include ./header.ejs%>
         </head>
         <body>
         <div id="app"></div>
@@ -64,6 +62,7 @@
                                                         <td> {{board.reg_date}} </td>
                                                 </tr>
                                         </table>
+                                        <a href="/board/create"><button>글쓰기</button></a>
                                 </div><br><br>
 
                                 <div id="indexButton">

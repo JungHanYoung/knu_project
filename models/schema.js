@@ -33,9 +33,7 @@ var boarder = new mongoose.Schema({
   // reg_date: {type: Date, default: Date.now}
 });
 
-// module.exports = {
-//   memberSchema : mongoose.model('member', member),
-//   boarderSchema : mongoose.model('boarder', boarder)
-// }
-
-module.exports = mongoose.model('boarders', boarders);
+module.exports = {
+  memberSchema : mongoose.model('member', member),
+  boarderSchema: mongoose.model('boarders', boarders)
+}
