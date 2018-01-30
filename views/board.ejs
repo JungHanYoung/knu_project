@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+    <script src='https://unpkg.com/vue'></script>
+    <html>
+        <head>
+            <link rel='stylesheet' href='/stylesheets/style.css' />
+            <title>게시판 목록</title>
+        </head>
+        <body>
+        <div id="app"></div>
+
+            개발중vvvvvvvvvvvvvvv<br><br>
+            <form action="/search">
+                제목 : <input type="checkbox" id="myCheck">
+                내용 : <input type="checkbox" id="myCheck">
+                닉네임 : <input type="checkbox" id="myCheck">
+                컨텐츠 : <input type="checkbox" id="myCheck"> <br>
+                작성날짜 : <input type="month" id="myMonth" value="2018-01">부터 <br>
+                검색할 내용을 입력하세요. 
+                <input type="text" name="firstname">
+                <input type="submit" value="검색">
+            </form> 
+                  
+        </body>
+        <script>
+        new Vue({
+                el: "#app",
+                template: `
+                        <div>
+                                <div>
+                                        정보<br>
+        
+                                        검색된 총 게시물 수 : {{ boardCount }}
+                                        <br>
+        
+                                        현재 인덱스  : {{ page }}
+                                        <br>
+
+                                        총 인덱스 수 : {{ boardIndex }}
+                                        <br>
+
+                                        상위인덱스 : {{ superialIndex }}
+                                        <br>
+
+                                        잔여인덱스 : {{ remainIndex }}
+                                        <br>
+                                </div><br><br>
+
+                                <div>
+                                        현재 인덱스 상태 : {{ indexStatus }}
+                                </div><br><br>
+
+                                <div>
+                                        게시물 목록<br><br>
+                                        <table style="width:100%; text-align:left;">
+
+                                        <tr>
+                                                <th>제목</th>
+                                                <th>작성자</th> 
+                                                <th>작성날짜</th>
+                                        </tr>
+                                                <tr v-for="board in boards">
+                                                        <td> {{board.title}} </td>
+                                                        <td> {{board.nick}} </td>
+                                                        <td> {{board.reg_date}} </td>
+                                                </tr>
+                                        </table>
+                                </div><br><br>
+
+                                <div id="indexButton">
+                                        <span v-for="pageNumber in (startPage, endPage)">
+                                                <span v-if="page==pageNumber">{{ pageNumber }}</span>
+                                                <span v-else><a :href="'page=' + pageNumber ">{{  pageNumber }}</a></span>
+                                        </span>
+                                </div>
+
+                                <div id="nextButton">
+                                        <a v-if="(indexStatus==1 || indexStatus==2)" :href="'page=' + endPage+1 "><button>NEXT</button></a>
+                                </div><br><br>
+
+                                <div id="nextMessage">
+                                        <div v-if="(indexStatus==1 || indexStatus==2)">다음을 누르시면 새로운 페이지가 나타납니다.</div>
+                                </div>
+
+                                <div id="previousButton">
+                                        <a v-if="(indexStatus==2 || indexStatus==3)" :href="'page=' + previous "><button>PREVIOUS</button></a>
+                                </div><br><br>
+
+                                <div id="nextMessage">
+                                        <div v-if="page==boardIndex">더 이상 표시할 페이지가 없습니다.</div>
+                                </div>
+
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                카테고리 설정
+                                <a href="/board/category=common/page=1"><button>common</button></a>
+                                <a href="/board/category=trash/page=1"><button>trash</button></a>
+
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                        </div>
+                `,
+                data() {
+                        return {
+                                boardCount: <%- JSON.stringify(boardCount) %>,
+                                page: <%- JSON.stringify(page) %>,
+                                boardIndex: new Number(),
+                                superialIndex: new Number(),
+                                remainIndex: new Number(),
+                                boards: <%- JSON.stringify(boardData) %>,
+                                indexStatus: 0,
+                                startPage: 1,
+                                endPage: new Number(),
+                                previous: new Number()
+                                
+                        }
+                },
+                created() {
+                        this.boardIndex = ((this.boardCount % 10) == 0) ? Math.floor(this.boardCount / 10) : Math.floor(this.boardCount / 10) + 1
+                        this.superialIndex = Math.floor(this.boardIndex / 10) + 1
+                        this.remainIndex = this.boardIndex % 10
+                        this.endPage = this.boardIndex
+
+                        if(this.boardIndex>10) { this.indexStatus = 1; this.endPage = 10;}
+                        if (10 < this.page && (((Math.floor(this.page / 10) + 1) * 10) < this.boardIndex)) { this.indexStatus = 2; this.startPage = ((Math.floor(this.page / 10)) * 10) + 1; this.endPage = ((Math.floor(this.page / 10) + 1) * 10); } 
+                        if (10 < this.page && (((Math.floor(this.page / 10) + 1) * 10) > this.boardIndex)) { this.indexStatus = 3; this.startPage = ((Math.floor(this.page / 10)) * 10) + 1; this.endPage = this.boardIndex; }
+
+                        this.previous = ((Math.floor(this.page/10))*10)
+                }
+                
+        })
+        </script>
+    </html>
