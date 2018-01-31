@@ -2,10 +2,7 @@
 <html>
   <head>
     <title></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.17.6/vuetify.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.17.6/vuetify.css">
+    <% include ./header.ejs %>
     <meta charset="utf-8">
   </head>
   <body>
@@ -15,9 +12,6 @@
         el: "#app",
         template: `
         <v-app>
-          <v-toolbar color="indigo" dark fixed app>
-            <v-toolbar-title>knu_project</v-toolbar-title>
-          </v-toolbar>
           <v-content>
             <v-container fluid>
               <v-layout column>
@@ -27,10 +21,10 @@
                     <v-toolbar-title>Register</v-toolbar-title>
                   </v-toolbar>
                   <div class="pl-4 pr-4 pt-2 pb-2">
-                    <v-form action="/registermember" method="post">
+                    <v-form action="/member/register" method="post">
                       <v-text-field label="E-mail" v-model="email" name="email" required></v-text-field>
-                      <v-text-field label="Password" v-model="password" required></v-text-field>
-                      <v-text-field label="Nickname" v-model="nick" required></v-text-field>
+                      <v-text-field label="Password" v-model="password" name="password" required></v-text-field>
+                      <v-text-field label="Nickname" v-model="nick" name="nick" required></v-text-field>
                       <v-btn type="submit" block color="secondary" class="cyan">Sign Up</v-btn>
                     </v-form>
                   </div>
@@ -41,7 +35,7 @@
         <v-app>`,
         data: function(){
           return {
-            email: 'hello',
+            email: '',
             password: '',
             nick: ''
           }

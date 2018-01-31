@@ -37,6 +37,9 @@ app.use('/', index);
 app.use('/member', member);
 app.use('/board', board);
 
+// 라우터에 해당하는 url이 없는 경우
+// 로그인 O -> 게시판 목록 창으로 이동 ('/board')
+// 로그인 X -> 로그인 창으로 이동/member/loginForm
 app.use(function (req, res, next) {
   var sess = req.session;
   if (sess.email) {

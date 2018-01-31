@@ -3,6 +3,31 @@ var router = express.Router();
 
 const schema = require('../models/schema.js')
 
+router.get('/logout', function (req, res, next) {
+  var sess = req.session;
+  if (sess.email) {
+    req.session.destroy(function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.redirect('/');
+      }
+    })
+  } else {
+    res.redirect('/');
+  }
+})
+
+//로그아웃을 제외한 회원관련 url은 session값을 확인..
+router.use(function(req, res, next){
+  const sess = req.session;
+  if(sess.email && sess.nick){
+    res.redirect('/');
+  } else{
+    next()
+  }
+})
+
 // 로그인페이지!!
 router.get('/loginForm', function(req, res, next) {
   // loginForm.ejs 렌더링 
@@ -28,11 +53,13 @@ router.post('/login', function(req, res, next){
     })
 })
 
-router.get('/addForm', function(req, res, next){
-  // addForm.ejs 렌더링 
-  res.send('add Form')
+// 회원가입 폼
+router.get('/registerForm', function(req, res, next){
+  res.render('registerForm')
 });
 
+
+// 회원가입처리!!
 router.post('/register', function (req, res, next) {
   var member = new schema.memberSchema({
     email: req.body.email,
@@ -46,7 +73,10 @@ router.post('/register', function (req, res, next) {
     }
     else {
       console.log(member);
-      res.redirect('/member/welcome');
+      var sess = req.session;
+      sess.email = member.email;
+      sess.nick = member.nick;
+      res.redirect('/');
     }
   });
   // console.log('email is ' + req.body.email);
@@ -58,21 +88,6 @@ router.post('/register', function (req, res, next) {
 router.get('/welcome', function (req, res, next) {
   console.log(req.session.email)
   res.render('welcome', { message: req.session.email });
-})
-
-router.get('/logout', function(req, res, next) {
-  var sess = req.session;
-  if (sess.email) {
-    req.session.destroy(function (err) {
-      if (err) {
-        console.log(err);
-      } else {
-        res.redirect('/');
-      }
-    })
-  } else {
-    res.redirect('/');
-  }
 })
 
 module.exports = router;
