@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <% include ./header.ejs%>
+            
+        </head>
+        <body>
+        <div id="app"></div>
+
+            
+                  
+        </body>
+        <script>
+        new Vue({
+                el: "#app",
+                template: `
+                <v-app>
+                    <v-container
+                    id="scroll-target"
+                    >
+                        <v-layout
+                            column
+                            align-center
+                            justify-center
+                            v-scroll="{
+                            target: '#scroll-target'
+                            }"
+                            id="chat"
+                        >
+                        </v-layout>
+                    </v-container>
+                    <v-flex xs6 offset-xs3>
+                        <v-form id="f1">
+                            <v-text-field append-icon="open_in_new" id="message"></v-text-field>
+                        </v-form>
+                    </v-flex>
+                </v-app>
+                `,
+                data() {
+                        return {
+                        }
+                },
+                created() {
+                    
+                },
+                methods: {
+
+                }
+                
+        })
+        var nick = <%- JSON.stringify(nick) %>
+        console.log(nick)
+        $(function () {
+            var socket = io.connect();
+            $("#f1").submit(function () {
+                //socket.emit('chat message', $("#m").val());
+                socket.emit('chat client', {
+                    'nick': nick,
+                    'message': $('#message').val()
+                })
+                $('#message').val('');
+                return false;
+            })
+            socket.on('chat server', function (msg) {
+                var nick = msg.nick;
+                var message = msg.message;
+                $('#chat').append($('<li>').text(nick + ' : ' + message));
+                //console.log(data);
+            })
+        })
+        </script>
+    </html>

@@ -22,7 +22,7 @@ router.get('/',function(req,res,next){
         boardMediator.find({}).count(function(err,boardRawCount){
             
             boardMediator.find({}, 'index nick title reg_date', function(err,boardRawData){
-                res.render('board',{boardData: boardRawData,boardCount:boardRawCount,page:1});
+                res.render('board',{boardData: boardRawData, boardCount:boardRawCount, page:1});
               }).sort( { "reg_date": -1 } ).limit(10);
         });
 });

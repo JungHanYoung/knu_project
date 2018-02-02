@@ -10,11 +10,26 @@ var session = require('express-session');
 
 db();
 
-var index = require('./routes/index');
-var member = require('./routes/member');
-var board = require('./routes/board');
+var index = require('./routes/index')
+  , member = require('./routes/member')
+  , board = require('./routes/board')
 
 var app = express();
+
+var server = require('http').createServer(app);
+var io = require('socket.io').listen(server);
+
+app.set('port', process.env.PORT || 3000)
+
+
+io.on('connection', function (socket) {
+  console.log('user connected')
+  socket.on('chat client', function (msg) {
+    console.log(msg.nick);
+    console.log(msg.message);
+    io.emit('chat server', msg)
+  })
+})
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -33,6 +48,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//test!!
+app.get('/chat', function (req, res) {
+  sess = req.session;
+  
+  res.render('chat', {nick: sess.nick});
+});
+
+
+
 app.use('/', index);
 app.use('/member', member);
 app.use('/board', board);
@@ -40,14 +64,14 @@ app.use('/board', board);
 // 라우터에 해당하는 url이 없는 경우
 // 로그인 O -> 게시판 목록 창으로 이동 ('/board')
 // 로그인 X -> 로그인 창으로 이동/member/loginForm
-app.use(function (req, res, next) {
-  var sess = req.session;
-  if (sess.email) {
-    res.redirect('/board')
-  } else {
-    res.redirect('/member/loginForm')
-  }
-});
+// app.use(function (req, res, next) {
+//   var sess = req.session;
+//   if (sess.email) {
+//     res.redirect('/board')
+//   } else {
+//     res.redirect('/member/loginForm')
+//   }
+// });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -67,8 +91,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-
+server.listen(app.get('port'))
 
 module.exports = app;
-
-
