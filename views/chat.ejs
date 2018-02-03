@@ -20,53 +20,68 @@
                     >
                         <v-layout
                             column
-                            align-center
-                            justify-center
                             v-scroll="{
                             target: '#scroll-target'
                             }"
                             id="chat"
                         >
+                        <li v-for="message in our_message" xs10 offset-xs2 style="border: 2px solid black; padding:10px; border-bottom-right-radius: 25px">
+                            {{ message.message }}
+                        </li>
                         </v-layout>
                     </v-container>
                     <v-flex xs6 offset-xs3>
-                        <v-form id="f1">
-                            <v-text-field append-icon="open_in_new" id="message"></v-text-field>
+                        <v-form id="f1" v-on:submit.prevent="sendMessage">
+                            <v-text-field v-model="my_message" append-icon="open_in_new" id="message"></v-text-field>
                         </v-form>
                     </v-flex>
+                    <v-btn @click="addRow">CLICK ME</v-btn>
                 </v-app>
                 `,
                 data() {
-                        return {
-                        }
-                },
-                created() {
-                    
+                    return {
+                        socket: {},
+                        // nick: <%- JSON.stringify(nick) %>,
+                        my_message:'',
+                        our_message:[]
+                    }
                 },
                 methods: {
-
+                    sendMessage(){
+                        this.socket.emit('chat client', {'message': this.my_message})
+                        this.my_message = ''
+                    },
+                    addRow(msg){
+                        this.our_message.push(msg)
+                    }
+                },
+                created() {
+                    this.socket = io.connect();
+                    console.log(this.our_message)
+                    //console.log(this.socket)
+                    this.socket.on('chat server', this.addRow)
                 }
                 
         })
-        var nick = <%- JSON.stringify(nick) %>
-        console.log(nick)
-        $(function () {
-            var socket = io.connect();
-            $("#f1").submit(function () {
-                //socket.emit('chat message', $("#m").val());
-                socket.emit('chat client', {
-                    'nick': nick,
-                    'message': $('#message').val()
-                })
-                $('#message').val('');
-                return false;
-            })
-            socket.on('chat server', function (msg) {
-                var nick = msg.nick;
-                var message = msg.message;
-                $('#chat').append($('<li>').text(nick + ' : ' + message));
-                //console.log(data);
-            })
-        })
+        // var nick = <%- JSON.stringify(nick) %>
+        // console.log(nick)
+        // $(function () {
+        //     var socket = io.connect();
+        //     $("#f1").submit(function () {
+        //         //socket.emit('chat message', $("#m").val());
+        //         socket.emit('chat client', {
+        //             'nick': nick,
+        //             'message': $('#message').val()
+        //         })
+        //         $('#message').val('');
+        //         return false;
+        //     })
+        //     socket.on('chat server', function (msg) {
+        //         var nick = msg.nick;
+        //         var message = msg.message;
+        //         $('#chat').append($('<li>').text(nick + ' : ' + message));
+        //         //console.log(data);
+        //     })
+        // })
         </script>
     </html>
