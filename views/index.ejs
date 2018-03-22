@@ -1,11 +1,75 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+
+<head>
+  <title></title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.17.6/vuetify.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/0.17.6/vuetify.css">
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+  <meta charset="utf-8">
+</head>
+
+<body>
+  <div id="app"></div>
+
+  <script>
+    new Vue({
+      el: "#app",
+      template: `
+        <v-app>
+          <v-toolbar color="indigo" dark fixed app>
+            <v-toolbar-title>knu_project</v-toolbar-title>
+            <v-text-field light solo prepend-icon="search" placeholder="Search" style="max-width: 500px; min-width: 128px; margin-left: 50px;"></v-text-field>
+            <v-spacer></v-spacer>
+            <v-badge overlap color="orange">
+              <v-icon slot="badge" dark> notifications</v-icon>
+                <v-icon large color="grey darken-1">
+                  account_box
+                </v-icon>
+            </v-badge >
+          </v-toolbar>
+          <v-content>
+            <v-container fluid>
+              <v-layout column>
+                <br>
+                <v-flex xs6 offset-xs3>
+                  <v-tooltip right class="text-xs-right">
+                    <v-btn icon large slot="activator" href="/boarderFrom"><v-icon>create</v-icon></v-btn>
+                    <span>글작성</span>
+                  </v-tooltip>
+                    <v-list two-line>
+                      <template v-for="item in items">
+                          <v-list-tile v-bind:key="item._id" :href="'/detailBoarder/' + item._id">
+                            <v-list-tile-content>
+                              <v-list-tile-title v-model="item.title">{{ item.title }}</v-list-tile-title>
+                            </v-list-tile-content>
+                              <v-list-tile-action>
+                              <v-list-tile-action-text>{{ item.nick }}</v-list-tile-action-text>
+                            </v-list-tile-action>
+                          </v-list-tile>
+                      </template>
+                    </v-list>
+                  <div class="text-xs-center">
+                    <v-pagination :length="6" v-model="page"></v-pagination >
+                  </div>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-content>
+        <v-app>`,
+      data: function () {
+        return {
+          items: <% if(boarders) { %> <%- JSON.stringify(boarders) %> <% } %>,
+          page: 1
+        }
+      },
+      methods: {
+        
+      }
+    })
+  </script>
+</body>
+
 </html>

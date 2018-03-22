@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <% include ./header.ejs %>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="app"></div>
+    <script>
+      new Vue({
+        el: "#app",
+        template: `
+        <v-app>
+          <v-content>
+            <v-container fluid>
+              <v-layout column>
+                <br>
+                <v-flex xs6 offset-xs3>
+                  <v-toolbar flat dense class="indigo" dark >
+                    <v-toolbar-title>Register</v-toolbar-title>
+                  </v-toolbar>
+                  <div class="pl-4 pr-4 pt-2 pb-2">
+                    <v-form action="/member/register" method="post">
+                      <v-text-field label="E-mail" v-model="email" name="email" required></v-text-field>
+                      <v-text-field label="Password" v-model="password" name="password" required></v-text-field>
+                      <v-text-field label="Nickname" v-model="nick" name="nick" required></v-text-field>
+                      <v-btn type="submit" block color="secondary" class="cyan">Sign Up</v-btn>
+                    </v-form>
+                  </div>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-content>
+        <v-app>`,
+        data: function(){
+          return {
+            email: '',
+            password: '',
+            nick: ''
+          }
+        }
+      })
+    </script>
+  </body>
+</html>
